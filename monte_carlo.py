@@ -3,22 +3,22 @@ import matplotlib.pyplot as plt
 from black_scholes import black_scholes
 
 # Set the parameters
-num_simulations = 1000
-num_days = 365
-last_price = 1957  # This should be the current price of ETH
-volatility = 0.4  # This should be the historical volatility of ETH
-expected_return = 0.00  # This should be the expected return of ETH
-num_eth = 50  # Amount of ETH in collateral
-num_options = 50  # Number of options bought
-strike_price = 0.8 * last_price  # 80% of the starting price
-maturity = 1  # Maturity of the loan and the option
-interest_rate = 0.05
+NUM_SIMULATIONS = 1000
+NUM_DAYS = 365
+LAST_PRICE = 1957  # This should be the current price of ETH
+VOLATILITY = 0.4  # This should be the historical VOLATILITY of ETH
+EXPECTED_RETURN = 0.00  # This should be the expected return of ETH
+NUM_ETH = 50  # Amount of ETH in collateral
+NUM_OPTIONS = 50  # Number of options bought
+STRIKE_PRICE = 0.8 * LAST_PRICE  # 80% of the starting price
+MATURITY = 1  # Maturity of the loan and the option
+INTEREST_RATE = 0.05
 
 # Create an empty matrix to hold the end price data
-all_simulated_price = np.zeros((num_simulations, num_days))
+all_simulated_price = np.zeros((NUM_SIMULATIONS, NUM_DAYS))
 
 # Create an empty matrix to hold the portfolio value data
-all_simulated_portfolio_value = np.zeros((num_simulations, num_days))
+all_simulated_portfolio_value = np.zeros((NUM_SIMULATIONS, NUM_DAYS))
 
 # Set the plot size
 plt.figure(figsize=(10, 5))
@@ -27,15 +27,15 @@ eth_values = []
 portfolio_values = []
 
 # Run the Monte Carlo simulation
-for x in range(num_simulations):
+for x in range(NUM_SIMULATIONS):
     # Calculate daily returns using GBM formula
     daily_returns = np.exp(
-        (expected_return - 0.5 * volatility**2) / num_days
-        + volatility * np.random.normal(0, 1, num_days) / np.sqrt(num_days)
+        (EXPECTED_RETURN - 0.5 * VOLATILITY**2) / NUM_DAYS
+        + VOLATILITY * np.random.normal(0, 1, NUM_DAYS) / np.sqrt(NUM_DAYS)
     )
 
     # Calculate price series
-    price_series = last_price * np.cumprod(daily_returns)
+    price_series = LAST_PRICE * np.cumprod(daily_returns)
 
     # Plot each simulation
     plt.figure(1)
@@ -45,16 +45,16 @@ for x in range(num_simulations):
     all_simulated_price[x] = price_series[-1]
 
     # Calculate the value of the ETH holdings each day
-    eth_value = num_eth * price_series
+    eth_value = NUM_ETH * price_series
     eth_values.append(eth_value)
 
     # Calculate the value of the put options each day
-    options_value = num_options * black_scholes(
+    options_value = NUM_OPTIONS * black_scholes(
         price_series,
-        strike_price,
-        maturity,
-        interest_rate,
-        volatility,
+        STRIKE_PRICE,
+        MATURITY,
+        INTEREST_RATE,
+        VOLATILITY,
         option_type="put",
     )
 
