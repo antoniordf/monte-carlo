@@ -1,7 +1,8 @@
 import numpy as np
 from scipy.stats import norm
 
-def black_scholes(S, K, T, r, sigma, option_type='call'):
+
+def black_scholes(S, K, T, r, sigma, option_type="call"):
     """
     Calculate the Black-Scholes price of a European option.
 
@@ -21,9 +22,9 @@ def black_scholes(S, K, T, r, sigma, option_type='call'):
     d2 = d1 - sigma * np.sqrt(T)
 
     # Calculate the price of the option
-    if option_type == 'call':
+    if option_type == "call":
         price = S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
-    elif option_type == 'put':
+    elif option_type == "put":
         price = K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
     else:
         raise ValueError("option_type must be either 'call' or 'put'.")
