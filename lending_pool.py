@@ -8,6 +8,8 @@ from pool_interest_rate import (
 class LendingPool:
     def __init__(self, asset):
         self.deposits = 0
+        self.lenders = {}
+        self.token_supply = 0
         self.loans = []
         self.utilization = 0
         self.variable_interest_rate = calculate_variable_interest_rate(
@@ -17,8 +19,12 @@ class LendingPool:
             asset, self.utilization
         )
 
-    def deposit(self, amount):
+    def deposit(self, lender, amount):
         self.deposits += amount
+        if lender in self.lenders:
+            self.lenders[lender]["amount"] += amount
+        else:
+            self.lenders[lender] = {"amount": amount, "tokens": 0}
 
     def issue_loan(
         self,
@@ -50,3 +56,10 @@ class LendingPool:
 
         self.loans.append(loan)
         return loan
+
+    def issue_tokens(self, lender, deposit_amount):
+        self.token_supply += deposit_amount
+        if lender in self.lenders:
+            self.lenders[lender]["tokens"] += deposit_amount
+        else:
+            raise ValueError("Cant issue tokens to inexistent lender.")

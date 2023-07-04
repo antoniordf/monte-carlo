@@ -17,15 +17,15 @@ def black_scholes(S, K, T, r, sigma, option_type="call"):
     Returns:
     float: the Black-Scholes price of the option.
     """
-    # Calculate d1 and d2
-    d1 = (np.log(S / K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
-    d2 = d1 - sigma * np.sqrt(T)
+    # Calculate d_1 and d_2
+    d_1 = (np.log(S / K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
+    d_2 = d_1 - sigma * np.sqrt(T)
 
     # Calculate the price of the option
     if option_type == "call":
-        price = S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
+        price = S * norm.cdf(d_1) - K * np.exp(-r * T) * norm.cdf(d_2)
     elif option_type == "put":
-        price = K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
+        price = K * np.exp(-r * T) * norm.cdf(-d_2) - S * norm.cdf(-d_1)
     else:
         raise ValueError("option_type must be either 'call' or 'put'.")
 

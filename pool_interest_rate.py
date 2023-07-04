@@ -14,18 +14,18 @@ def calculate_variable_interest_rate(asset, utilization):
     return r_t
 
 
-def calculate_actual_borrow_rate(Rt, secsperyear):
-    ActualAPY = (1 + Rt / secsperyear) ** secsperyear - 1
-    return ActualAPY
+def calculate_actual_borrow_rate(r_t, secsperyear):
+    actual_apy = (1 + r_t / secsperyear) ** secsperyear - 1
+    return actual_apy
 
 
 def calculate_stable_borrow_rate(asset, ratio):
     ratio_o = params[asset]["optimal_stable_to_total_debt_ratio"]
-    r0 = params[asset]["base_stable_rate"]
-    R_base = params[asset]["stable_rate_slope1"]
+    r_0 = params[asset]["base_stable_rate"]
+    r_base = params[asset]["stable_rate_slope1"]
 
     if ratio < ratio_o:
-        Rt = r0 + (ratio - ratio_o) / (1 - ratio_o) * R_base
+        r_t = r_0 + (ratio - ratio_o) / (1 - ratio_o) * r_base
     else:
         print("something went wrong")
-    return Rt
+    return r_t
